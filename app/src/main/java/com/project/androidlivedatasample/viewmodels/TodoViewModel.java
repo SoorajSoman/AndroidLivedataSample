@@ -36,6 +36,7 @@ public class TodoViewModel extends AndroidViewModel {
     public void delete(Todos todo) {
         todoRepository.delete(todo);
     }
+
     public void deleteAll() {
         todoRepository.deleteAll();
 

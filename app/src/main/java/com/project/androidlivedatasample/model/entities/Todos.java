@@ -22,11 +22,51 @@ public class Todos {
     @ColumnInfo(name = "todoDate")
     public Date todoDate;
     @ColumnInfo(name = "color")
-    public String color;
+    public int color;
     @ColumnInfo(name = "active")
     public int active;
 
+    public int getId() {
+        return id;
+    }
 
+    public String getTodoName() {
+        return todoName;
+    }
 
+    public String getTodoDescription() {
+        return todoDescription;
+    }
 
+    public Date getTodoDate() {
+        return todoDate;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setTodoName(String todoName) {
+        this.todoName = todoName;
+    }
+
+    public void setTodoDescription(String todoDescription) {
+        this.todoDescription = todoDescription;
+    }
+
+    public void setTodoDate(Date todoDate) {
+        this.todoDate = todoDate;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
 }
