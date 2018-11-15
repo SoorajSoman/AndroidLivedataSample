@@ -2,16 +2,19 @@ package com.project.androidlivedatasample.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
@@ -38,6 +41,8 @@ public class TodoListActivity extends AppCompatActivity {
     List<Todos>todosList;
 
    public TodoViewModel todoViewModel;
+    private TodoAdapter todoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +68,13 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     private void populateRecyclerView() {
-        final TodoAdapter todoAdapter=new TodoAdapter(todosList,this);
+         todoAdapter = new TodoAdapter(todosList, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(todoAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         todoViewModel.getTodoList().observe(this, new Observer<List<Todos>>() {
             @Override
             public void onChanged(@Nullable List<Todos> todos) {
@@ -78,6 +86,40 @@ public class TodoListActivity extends AppCompatActivity {
             }
         });
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAdapterPosition(); //get position which is swipe
+            if (direction == ItemTouchHelper.LEFT) {    //if swipe left
+                AlertDialog.Builder builder = new AlertDialog.Builder(TodoListActivity.this); //alert for confirm to delete
+                builder.setMessage("Are you sure to delete?");    //set message
+                builder.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() { //when click on DELETE
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        todoAdapter.notifyItemRemoved(position);    //item removed from recylcerview
+                        todoViewModel.delete(todosList.get(position));
+                        todosList.remove(position);  //then remove item
+                        return;
+                    }
+                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {  //not removing items if cancel is done
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        todoAdapter.notifyItemRemoved(position + 1);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
+                        todoAdapter.notifyItemRangeChanged(position, todoAdapter.getItemCount());   //notifies the RecyclerView Adapter that positions of element in adapter has been changed from position(removed element index to end of list), please update it.
+                        return;
+                    }
+                }).show();  //show alert dialog
+            }
+        }
+    };
+
+
 
 
 }
