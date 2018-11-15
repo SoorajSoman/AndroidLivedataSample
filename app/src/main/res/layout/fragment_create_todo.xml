@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".CreateTodo">
+    tools:context=".view.fragments.CreateTodo">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

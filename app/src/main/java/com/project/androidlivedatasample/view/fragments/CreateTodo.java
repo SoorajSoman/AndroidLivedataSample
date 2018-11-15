@@ -1,4 +1,4 @@
-package com.project.androidlivedatasample;
+package com.project.androidlivedatasample.view.fragments;
 
 
 import android.app.DatePickerDialog;
@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.project.androidlivedatasample.R;
 import com.project.androidlivedatasample.model.entities.Todos;
 import com.project.androidlivedatasample.view.TodoListActivity;
 

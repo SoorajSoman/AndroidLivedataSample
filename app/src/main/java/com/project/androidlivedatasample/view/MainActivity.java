@@ -1,7 +1,9 @@
-package com.project.androidlivedatasample;
+package com.project.androidlivedatasample.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.project.androidlivedatasample.R;
 
 public class MainActivity extends AppCompatActivity {
 
